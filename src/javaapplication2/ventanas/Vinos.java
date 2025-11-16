@@ -3,7 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package javaapplication2.ventanas;
+import javaapplication2.dbConnection;
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
 /**
  *
  * @author Tristi
@@ -23,11 +31,56 @@ public class Vinos extends javax.swing.JFrame {
         add(label);  // Añadir el JLabel al JFrame
     
         initComponents(); // Otros componentes, como botones, tablas, etc., pueden añadirse aquí
-    }
+        cargarDatos();
+   } 
+
+    
+private void cargarDatos() {
+    jTable1.setModel(obtenerDatosTabla());
+} 
     /**
      * Creates new form Vinos
      */
-   
+   private DefaultTableModel obtenerDatosTabla() {
+    // Crear el modelo con los nombres de las columnas
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.addColumn("id_vino");
+    modelo.addColumn("variedad");
+    modelo.addColumn("año");
+    modelo.addColumn("cantidad _de_botellas");
+    modelo.addColumn("precio_por_botella");
+    
+    // Consulta SQL
+    String sql = "SELECT * FROM vinos";
+    
+    try {
+        Connection conn = dbConnection.conectar();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        
+        // Recorrer los resultados
+        while (rs.next()) {
+            Object[] fila = new Object[5];
+            fila[0] = rs.getString(1);                    // VARCHAR
+            fila[1] = rs.getString(2);                   // VARCHAR
+            fila[2] = rs.getString(3);                          // BIGINT
+            fila[3] = rs.getString(4);         // BIGINT
+            fila[4] = rs.getString(5);           // BIGINT
+            
+            modelo.addRow(fila);
+        }
+        
+        rs.close();
+        stmt.close();
+        conn.close();
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage());
+    }
+    
+    return modelo;
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,16 +95,21 @@ public class Vinos extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Cantidad", null, null, null, null},
-                {"Precio Botella", null, null, null, null},
-                {"Monto total", null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
                 {null, null, null, null, null}
             },
             new String [] {
-                "", "Malbec Jov", "Reserva", "Cab/Mal", "Blend"
+                "id_vino", "variedad", "año", "cantidad_de_botellas", "precio_por_botella"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -61,20 +119,24 @@ public class Vinos extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

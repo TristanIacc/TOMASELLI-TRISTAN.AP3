@@ -4,6 +4,15 @@
  */
 package javaapplication2.ventanas2;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javaapplication2.crud;
+import javaapplication2.dbConnection;
+import javax.swing.JOptionPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 /**
  *
  * @author Tristi
@@ -12,13 +21,63 @@ public class registroDeVentas extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(registroDeVentas.class.getName());
 
-    /**
-     * Creates new form registroDeVentas
-     */
+ 
     public registroDeVentas() {
         initComponents();
+        
+         Registrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registroDeVentas(evt);  // Llamamos al método registrarVino cuando se presiona el botón
+            }
+        });
+    }
+    
+ private void registroDeVentas(java.awt.event.ActionEvent evt) {
+    // Obtener los valores de los JTextField
+    String idVinoText = idVino.getText(); // Obtener el texto del campo "id"
+    String cantidadBotellasText = cantidadBotellas.getText(); // Obtener el texto del campo "Variedad"
+    String montoVentaText = montoVenta.getText(); // Obtener el texto del campo "Año"
+    String vendedorText = vendedor.getText(); // Obtener el texto del campo "Cantidad de Botellas"
+    
+
+    // Validación: Verificar si los campos de cantidad, año y precio son numéricos
+   if (idVino.getText().isEmpty() || cantidadBotellas.getText().isEmpty() || 
+    montoVenta.getText().isEmpty() || vendedor.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+    return;
+}
+
+    long cantidadBotellas = 0;
+    long montoVenta = 0;
+
+    // Intentar convertir los campos "año", "cantidad" y "precio" a long
+    try {
+        cantidadBotellas = Long.parseLong(cantidadBotellasText);  // Convertir año a long
+        montoVenta = Long.parseLong(montoVentaText);  // Convertir cantidad a long
+       
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Cantidad y Monto.");
+        return;
     }
 
+    // Mostrar los datos recolectados en un JOptionPane
+    JOptionPane.showMessageDialog(this, "Datos ingresados:\n" +
+                 "Id del Vino: " + idVino.getText() + "\n" +
+                 "Cantidad: " + cantidadBotellas + "\n" +
+                 "Monto: " + montoVenta + "\n" +
+                 "Vendedor: " + vendedor.getText());
+
+    // Llamar al método de la clase CRUD para registrar el vino
+    boolean exito = crud.registrarVentaC(idVino.getText(), cantidadBotellas, montoVenta, vendedor.getText());
+
+    if (exito) {
+        JOptionPane.showMessageDialog(this, "Vino registrado correctamente.");
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al registrar el vino.");
+    }
+}
+ 
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,43 +87,116 @@ public class registroDeVentas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Registrar = new javax.swing.JButton();
+        vendedor = new javax.swing.JTextField();
+        idVino = new javax.swing.JTextField();
+        cantidadBotellas = new javax.swing.JTextField();
+        montoVenta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Fecha y Hora", "Vendido", "Monto", "Vendedor/Lugar", "pendiendente"
+        Registrar.setText("Registrar");
+        Registrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        });
+
+        vendedor.setText("Vendedor o Lugar");
+        vendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vendedorActionPerformed(evt);
+            }
+        });
+
+        idVino.setText("idVino");
+
+        cantidadBotellas.setText("Cantidad de botellas");
+        cantidadBotellas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cantidadBotellasActionPerformed(evt);
+            }
+        });
+
+        montoVenta.setText("Monto de la venta");
+        montoVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                montoVentaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(vendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idVino, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cantidadBotellas, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(157, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Registrar)
+                .addGap(17, 17, 17))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(123, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(idVino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cantidadBotellas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(Registrar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(montoVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addComponent(vendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void vendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vendedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_vendedorActionPerformed
+
+    private void cantidadBotellasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cantidadBotellasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cantidadBotellasActionPerformed
+
+    private void montoVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoVentaActionPerformed
+        // --- Código añadido manualmente (editable) ---
+        final String placeholder = "Monto de la venta";
+        montoVenta.setForeground(java.awt.Color.GRAY);
+        montoVenta.setText(placeholder);
+
+        montoVenta.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (montoVenta.getText().equals(placeholder)) {
+                    montoVenta.setText("");
+                    montoVenta.setForeground(java.awt.Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (montoVenta.getText().isEmpty()) {
+                    montoVenta.setForeground(java.awt.Color.GRAY);
+                    montoVenta.setText(placeholder);
+                }
+            }
+        });
+    }//GEN-LAST:event_montoVentaActionPerformed
+
+    private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RegistrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -92,7 +224,10 @@ public class registroDeVentas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton Registrar;
+    private javax.swing.JTextField cantidadBotellas;
+    private javax.swing.JTextField idVino;
+    public javax.swing.JTextField montoVenta;
+    private javax.swing.JTextField vendedor;
     // End of variables declaration//GEN-END:variables
 }

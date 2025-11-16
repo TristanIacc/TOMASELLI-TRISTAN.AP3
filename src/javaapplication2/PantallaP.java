@@ -5,10 +5,11 @@
 package javaapplication2;
 import javaapplication2.ventanas.Vinos;
 import javaapplication2.ventanas.Ventas;
-import javaapplication2.ventanas.Stock;
+
 import javaapplication2.ventanas2.registrarVino;
 import javaapplication2.ventanas2.eliminarVino;
 import javaapplication2.ventanas2.registroDeVentas;
+import javaapplication2.ventanas2.editarVino;
 
 import javax.swing.*;
 
@@ -42,7 +43,7 @@ public class PantallaP extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        editarVino = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -71,20 +72,20 @@ public class PantallaP extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu3.setText("Stock");
-        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+        editarVino.setText("Stock");
+        editarVino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu3ActionPerformed(evt);
+                editarVinoActionPerformed(evt);
             }
         });
 
-        jMenuItem6.setText("Control de Stock");
+        jMenuItem6.setText("Editar Vino");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem6ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem6);
+        editarVino.add(jMenuItem6);
 
         jMenuItem2.setText("Eliminar Vino");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +93,7 @@ public class PantallaP extends javax.swing.JFrame {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem2);
+        editarVino.add(jMenuItem2);
 
         jMenuItem4.setText("Registrar Vino");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -100,7 +101,7 @@ public class PantallaP extends javax.swing.JFrame {
                 jMenuItem4ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem4);
+        editarVino.add(jMenuItem4);
 
         jMenuItem7.setText("Registro de Ventas");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
@@ -108,13 +109,13 @@ public class PantallaP extends javax.swing.JFrame {
                 jMenuItem7ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem7);
+        editarVino.add(jMenuItem7);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(editarVino);
 
         jMenu4.setText("Ventas");
 
-        jMenuItem5.setText("Cargar Venta");
+        jMenuItem5.setText("Ventas");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem5ActionPerformed(evt);
@@ -183,21 +184,17 @@ System.out.println("eliminar vino");           // TODO add your handling code he
 System.out.println("Buscando Vinos");        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu3ActionPerformed
+    private void editarVinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarVinoActionPerformed
+    editarVino editarVino = new editarVino();
+        editarVino.setVisible(true); 
+System.out.println("Editar Vino");  
+    }//GEN-LAST:event_editarVinoActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-Stock stock = new Stock(); 
-        stock.setVisible(true); 
-System.out.println("Mostrando Stock");         // TODO add your handling code here:
+     editarVino editarVino = new editarVino();
+        editarVino.setVisible(true); 
+System.out.println("Editar Vino");  
     }//GEN-LAST:event_jMenuItem6ActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-Ventas ventas = new Ventas(); 
-        ventas.setVisible(true); 
-System.out.println("Mostrando Ventas");          // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
  registrarVino registrarVino = new registrarVino(); 
@@ -210,6 +207,12 @@ registroDeVentas registroDeVentas = new registroDeVentas();
         registroDeVentas.setVisible(true); 
            System.out.println("registro de ventas");             // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+ Ventas ventas = new Ventas(); 
+        ventas.setVisible(true); 
+System.out.println("Buscando Ventas");          // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,11 +240,11 @@ registroDeVentas registroDeVentas = new registroDeVentas();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu editarVino;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;

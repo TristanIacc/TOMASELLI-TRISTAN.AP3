@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package javaapplication2.ventanas2;
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javaapplication2.crud;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -14,19 +15,78 @@ import javax.swing.JLabel;
 public class registrarVino extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(registrarVino.class.getName());
-public registrarVino() {
+    public registrarVino() {
         // Configuración de la ventana JFrame
-        setTitle("Registrar vino"); // Título de la ventana
+        setTitle("registrar vino"); // Título de la ventana
         setSize(400, 300); // Tamaño de la ventana (ancho, alto)
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cerrar solo esta ventana
 
         // Agregar componentes si es necesario
-        JLabel label = new JLabel("Registrar vino");
+        JLabel label = new JLabel("registrar vino");
         add(label);  // Añadir el JLabel al JFrame
     
         initComponents(); // Otros componentes, como botones, tablas, etc., pueden añadirse aquí
+        
+          // Agregar el ActionListener para el botón Registrar
+        Registrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarVino(evt);  // Llamamos al método registrarVino cuando se presiona el botón
+            }
+        });
     }
+
+    // Método registrarVino
+ private void registrarVino(java.awt.event.ActionEvent evt) {
+    // Obtener los valores de los JTextField
+    String idVino = id.getText(); // Obtener el texto del campo "id"
+    String variedad = Variedad.getText(); // Obtener el texto del campo "Variedad"
+    String añoText = Año.getText(); // Obtener el texto del campo "Año"
+    String cantidadText = CantidadDeBotellas.getText(); // Obtener el texto del campo "Cantidad de Botellas"
+    String precioText = PrecioPorBotella.getText(); // Obtener el texto del campo "Precio por Botella"
+
+    // Validación: Verificar si los campos de cantidad, año y precio son numéricos
+    if (idVino.isEmpty() || variedad.isEmpty() || añoText.isEmpty() || cantidadText.isEmpty() || precioText.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+        return;
+    }
+
+    long año = 0;
+    long cantidad = 0;
+    long precio = 0;
+
+    // Intentar convertir los campos "año", "cantidad" y "precio" a long
+    try {
+        año = Long.parseLong(añoText);  // Convertir año a long
+        cantidad = Long.parseLong(cantidadText);  // Convertir cantidad a long
+        precio = Long.parseLong(precioText);  // Convertir precio a long
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Año, Cantidad y Precio.");
+        return;
+    }
+
+    // Mostrar los datos recolectados en un JOptionPane
+    JOptionPane.showMessageDialog(this, "Datos ingresados:\n" +
+                                          "ID: " + idVino + "\n" +
+                                          "Variedad: " + variedad + "\n" +
+                                          "Año: " + año + "\n" +
+                                          "Cantidad: " + cantidad + "\n" +
+                                          "Precio: " + precio);
+
+    // Llamar al método de la clase CRUD para registrar el vino
+    boolean exito = crud.registrarVinoC(idVino, variedad, año, cantidad, precio);
+
+    if (exito) {
+        JOptionPane.showMessageDialog(this, "Vino registrado correctamente.");
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al registrar el vino.");
+    }
+}
+              
+              
+    
+    
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,100 +96,90 @@ public registrarVino() {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jTextField5 = new javax.swing.JTextField();
+        id = new javax.swing.JTextField();
+        Variedad = new javax.swing.JTextField();
+        Año = new javax.swing.JTextField();
+        CantidadDeBotellas = new javax.swing.JTextField();
+        PrecioPorBotella = new javax.swing.JTextField();
+        Registrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.setText("Nombre del Vino");
-
-        jTextField2.setText("Variedad");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        id.setText("Id");
+        id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                idActionPerformed(evt);
             }
         });
 
-        jTextField3.setText("Año de botella");
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        Variedad.setText("Variedad");
+
+        Año.setText("Año");
+
+        CantidadDeBotellas.setText("Cantidad de Botellas");
+        CantidadDeBotellas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                CantidadDeBotellasActionPerformed(evt);
             }
         });
 
-        jTextField4.setText("Cantidad de botellas");
+        PrecioPorBotella.setText("Precio por Botella");
 
-        jButton1.setText("Registrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Registrar.setText("Registrar");
+        Registrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                RegistrarActionPerformed(evt);
             }
         });
-
-        jTextField5.setText("precio por botella");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(29, 29, 29))))
+                .addGap(53, 53, 53)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(CantidadDeBotellas)
+                    .addComponent(Año)
+                    .addComponent(id)
+                    .addComponent(Variedad)
+                    .addComponent(PrecioPorBotella))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addComponent(Registrar)
+                .addGap(48, 48, 48))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jButton1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Variedad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Año, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Registrar))
+                .addGap(18, 18, 18)
+                .addComponent(CantidadDeBotellas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(PrecioPorBotella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(88, 88, 88))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_idActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_RegistrarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void CantidadDeBotellasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CantidadDeBotellasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_CantidadDeBotellasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,11 +207,11 @@ public registrarVino() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField Año;
+    private javax.swing.JTextField CantidadDeBotellas;
+    private javax.swing.JTextField PrecioPorBotella;
+    private javax.swing.JButton Registrar;
+    private javax.swing.JTextField Variedad;
+    private javax.swing.JTextField id;
     // End of variables declaration//GEN-END:variables
 }

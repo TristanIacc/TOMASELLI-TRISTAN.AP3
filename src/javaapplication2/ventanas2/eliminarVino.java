@@ -3,9 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package javaapplication2.ventanas2;
-
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javaapplication2.dbConnection;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.sql.PreparedStatement;
+
 
 /**
  *
@@ -14,19 +22,87 @@ import javax.swing.JLabel;
 public class eliminarVino extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(eliminarVino.class.getName());
-    public eliminarVino() {
+public eliminarVino() {
         // Configuración de la ventana JFrame
-        setTitle("eliminar vino"); // Título de la ventana
+        setTitle("Ventana Para Eliminar Vino"); // Título de la ventana
         setSize(400, 300); // Tamaño de la ventana (ancho, alto)
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cerrar solo esta ventana
 
         // Agregar componentes si es necesario
-        JLabel label = new JLabel("Eliminar vino");
+        JLabel label = new JLabel("Bienvenido a la ventana de Ventas");
         add(label);  // Añadir el JLabel al JFrame
-    
-        initComponents(); // Otros componentes, como botones, tablas, etc., pueden añadirse aquí
+        
+        initComponents();
+        cargarDatos();
     }
+
+private void cargarDatos() {
+    jTable1.setModel(obtenerDatosTabla());
+} 
+    /**
+     * Creates new form Vinos
+     */
+   private DefaultTableModel obtenerDatosTabla() {
+    // Crear el modelo con los nombres de las columnas
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.addColumn("id_vino");
+    modelo.addColumn("variedad");
+    modelo.addColumn("año");
+    modelo.addColumn("cantidad _de_botellas");
+    modelo.addColumn("precio_por_botella");
+    
+    // Consulta SQL
+    String sql = "SELECT * FROM vinos";
+    
+    try {
+        Connection conn = dbConnection.conectar();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        
+        // Recorrer los resultados
+        while (rs.next()) {
+            Object[] fila = new Object[5];
+            fila[0] = rs.getString(1);                    // VARCHAR
+            fila[1] = rs.getString(2);                   // VARCHAR
+            fila[2] = rs.getString(3);                          // BIGINT
+            fila[3] = rs.getString(4);         // BIGINT
+            fila[4] = rs.getString(5);           // BIGINT
+            
+            modelo.addRow(fila);
+        }
+        
+        rs.close();
+        stmt.close();
+        conn.close();
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage());
+    }
+    
+    return modelo;
+}
+   private boolean eliminarVino(String idVino) {
+    String sql = "DELETE FROM vinos WHERE id_vino = ?";
+    
+    try {
+        Connection conn = dbConnection.conectar();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, idVino);
+        
+        int filasAfectadas = pstmt.executeUpdate();
+        
+        pstmt.close();
+        conn.close();
+        
+        return filasAfectadas > 0;
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,21 +113,90 @@ public class eliminarVino extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        eliminarVinoBoton = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "id_vino", "variedad", "año", "cantidad_de_botellas", "precio_por_botella"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        eliminarVinoBoton.setText("Eliminar");
+        eliminarVinoBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarVinoBotonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 517, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(eliminarVinoBoton)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(eliminarVinoBoton)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void eliminarVinoBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarVinoBotonActionPerformed
+
+    // Verificar que haya una fila seleccionada
+    int filaSeleccionada = jTable1.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(null, "Por favor selecciona una fila para eliminar");
+        return;
+    }
+    
+    // Confirmar eliminación
+    int confirmacion = JOptionPane.showConfirmDialog(
+        null, 
+        "¿Estás seguro de eliminar este vino?", 
+        "Confirmar eliminación", 
+        JOptionPane.YES_NO_OPTION
+    );
+    
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        // Obtener el ID del vino de la fila seleccionada (columna 0)
+        String idVino = jTable1.getValueAt(filaSeleccionada, 0).toString();
+        
+        // Eliminar de la base de datos
+        if (eliminarVino(idVino)) {
+            JOptionPane.showMessageDialog(null, "Vino eliminado correctamente");
+            cargarDatos(); // Recargar la tabla
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al eliminar el vino");
+        }
+    }       // TODO add your handling code here:
+    }//GEN-LAST:event_eliminarVinoBotonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +224,8 @@ public class eliminarVino extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton eliminarVinoBoton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
